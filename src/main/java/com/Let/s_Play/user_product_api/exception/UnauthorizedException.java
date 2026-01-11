@@ -1,0 +1,7 @@
+package com.Let.s_Play.user_product_api.exception;
+
+public class UnauthorizedException extends RuntimeException {
+    public UnauthorizedException(String message) {
+        super(message);
+    }
+}

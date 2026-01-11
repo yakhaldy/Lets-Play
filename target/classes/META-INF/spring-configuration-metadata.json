@@ -1,0 +1,26 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.Let.s_Play.user_product_api.security.JwtProperties",
+      "sourceType": "com.Let.s_Play.user_product_api.security.JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.Long",
+      "sourceType": "com.Let.s_Play.user_product_api.security.JwtProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "sourceType": "com.Let.s_Play.user_product_api.security.JwtProperties"
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}

@@ -1,0 +1,7 @@
+package com.Let.s_Play.user_product_api.exception;
+
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}

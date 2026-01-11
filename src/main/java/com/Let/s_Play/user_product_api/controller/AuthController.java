@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Let.s_Play.user_product_api.Service.AuthService;
 import com.Let.s_Play.user_product_api.dto.AuthResponse;
 import com.Let.s_Play.user_product_api.dto.UserRequest;
 import com.Let.s_Play.user_product_api.dto.UserResponse;
-import com.Let.s_Play.user_product_api.model.User;
+import com.Let.s_Play.user_product_api.service.AuthService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,13 +22,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRequest userRequest) {
         UserResponse userResponse = authService.register(userRequest);
         return ResponseEntity.ok(userResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody UserRequest userRequest) {
         AuthResponse authResponse = authService.login(userRequest);
         return ResponseEntity.ok(authResponse);
     }
