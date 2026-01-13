@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .token-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .token-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .token-display {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .endpoint h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .method-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-right: 10px;
+        }
+
+        .get { background: #28a745; color: white; }
+        .post { background: #007bff; color: white; }
+        .put { background: #ffc107; color: black; }
+        .delete { background: #dc3545; color: white; }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 120px;
+            font-family: monospace;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #5568d3;
+        }
+
+        .response {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .response h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .response pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+
+        .error {
+            border-left: 4px solid #dc3545;
+            background: #ffe6e6;
+        }
+
+        .success {
+            border-left: 4px solid #28a745;
+            background: #e6ffe6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 API Test Dashboard</h1>
+
+        <div class="token-section">
+            <h3>🔑 Authentication Token</h3>
+            <div class="token-display" id="tokenDisplay">No token set. Please login first.</div>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="section">
+            <h2>🔐 Authentication</h2>
+            
+            <div class="endpoint">
+                <h3><span class="method-badge post">POST</span>/auth/register</h3>
+                <div class="form-group">
+                    <label>Request Body (JSON):</label>
+                    <textarea id="registerBody">
+{
+    "name": "testuser",
+    "email": "test@example.com",
+    "password": "password123"
+}
+                    </textarea>
+                </div>
+                <button onclick="register()">Register</button>
+                <div id="registerResponse"></div>
+            </div>
+
+            <div class="endpoint">
+                <h3><span class="method-badge post">POST</span>/auth/login</h3>
+                <div class="form-group">
+                    <label>Request Body (JSON):</label>
+                    <textarea id="loginBody">
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+                    </textarea>
+                </div>
+                <button onclick="login()">Login</button>
+                <button onclick="loginAsAdmin()" style="background: #dc3545; margin-left: 10px;">🔑 Login as Admin</button>
+                <div id="loginResponse"></div>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="section">
+            <h2>📦 Products</h2>
+            
+            <div class="endpoint">
+                <h3><span class="method-badge get">GET</span>/products</h3>
+                <button onclick="getAllProducts()">Get All Products</button>
+                <div id="getAllProductsResponse"></div>
+            </div>
+
+            <div class="endpoint">
+                <h3><span class="method-badge post">POST</span>/products</h3>
+                <div class="form-group">
+                    <label>Request Body (JSON):</label>
+                    <textarea id="createProductBody">
+{
+    "name": "Gaming Laptop",
+    "description": "High performance gaming laptop",
+    "price": 1299.99,
+    "stock": 50
+}
+                    </textarea>
+                </div>
+                <button onclick="createProduct()">Create Product</button>
+                <div id="createProductResponse"></div>
+            </div>
+
+            <div class="endpoint">
+                <h3><span class="method-badge put">PUT</span>/products/{id}</h3>
+                <div class="form-group">
+                    <label>Product ID:</label>
+                    <input type="text" id="updateProductId" placeholder="Enter product ID">
+                </div>
+                <div class="form-group">
+                    <label>Request Body (JSON):</label>
+                    <textarea id="updateProductBody">
+{
+    "name": "Updated Gaming Laptop",
+    "description": "Updated description",
+    "price": 1399.99,
+    "stock": 45
+}
+                    </textarea>
+                </div>
+                <button onclick="updateProduct()">Update Product</button>
+                <div id="updateProductResponse"></div>
+            </div>
+
+            <div class="endpoint">
+                <h3><span class="method-badge delete">DELETE</span>/products/{id}</h3>
+                <div class="form-group">
+                    <label>Product ID:</label>
+                    <input type="text" id="deleteProductId" placeholder="Enter product ID">
+                </div>
+                <button onclick="deleteProduct()">Delete Product</button>
+                <div id="deleteProductResponse"></div>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div class="section">
+            <h2>👨‍💼 Admin Access</h2>
+            
+            <div class="endpoint">
+                <h3><span class="method-badge get">GET</span>/admin/users</h3>
+                <button onclick="getAllUsers()">Get All Users</button>
+                <div id="getAllUsersResponse"></div>
+            </div>
+
+            <div class="endpoint">
+                <h3><span class="method-badge delete">DELETE</span>/admin/user/{id}</h3>
+                <div class="form-group">
+                    <label>User ID:</label>
+                    <input type="text" id="deleteUserId" placeholder="Enter user ID">
+                </div>
+                <button onclick="deleteUser()">Delete User</button>
+                <div id="deleteUserResponse"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://localhost:8080';
+        let authToken = '';
+
+        function setToken(token) {
+            authToken = token;
+            document.getElementById('tokenDisplay').textContent = token || 'No token set';
+        }
+
+        function getHeaders(includeAuth = false) {
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            if (includeAuth && authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+            return headers;
+        }
+
+        function displayResponse(elementId, response, isError = false) {
+            const element = document.getElementById(elementId);
+            element.className = isError ? 'response error' : 'response success';
+            element.innerHTML = `
+                <h4>${isError ? '❌ Error' : '✅ Success'}</h4>
+                <pre>${JSON.stringify(response, null, 2)}</pre>
+            `;
+        }
+
+        async function register() {
+            try {
+                const body = JSON.parse(document.getElementById('registerBody').value);
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify(body)
+                });
+                const data = await response.json();
+                displayResponse('registerResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('registerResponse', { error: error.message }, true);
+            }
+        }
+
+        async function login() {
+            try {
+                const body = JSON.parse(document.getElementById('loginBody').value);
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify(body)
+                });
+                const data = await response.json();
+                if (response.ok && data.token) {
+                    setToken(data.token);
+                }
+                displayResponse('loginResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('loginResponse', { error: error.message }, true);
+            }
+        }
+
+        async function loginAsAdmin() {
+            try {
+                const adminCredentials = {
+                    email: "admin@admin.com",
+                    password: "admin123"
+                };
+                
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: getHeaders(),
+                    body: JSON.stringify(adminCredentials)
+                });
+                const data = await response.json();
+                if (response.ok && data.token) {
+                    setToken(data.token);
+                }
+                displayResponse('loginResponse', { 
+                    ...data, 
+                    message: '🔑 Logged in as Admin',
+                    credentials: adminCredentials 
+                }, !response.ok);
+            } catch (error) {
+                displayResponse('loginResponse', { error: error.message }, true);
+            }
+        }
+
+        async function handleResponse(response) {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return await response.json();
+            } else if (response.status === 204 || !response.body) {
+                return { message: 'Success - No content', status: response.status };
+            } else {
+                const text = await response.text();
+                return { message: text || 'No response body', status: response.status, statusText: response.statusText };
+            }
+        }
+
+        async function getAllProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products`, {
+                    headers: getHeaders(true)
+                });
+                const data = await handleResponse(response);
+                displayResponse('getAllProductsResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('getAllProductsResponse', { error: error.message }, true);
+            }
+        }
+
+        async function createProduct() {
+            try {
+                const body = JSON.parse(document.getElementById('createProductBody').value);
+                const response = await fetch(`${API_BASE}/products`, {
+                    method: 'POST',
+                    headers: getHeaders(true),
+                    body: JSON.stringify(body)
+                });
+                const data = await handleResponse(response);
+                displayResponse('createProductResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('createProductResponse', { error: error.message }, true);
+            }
+        }
+
+        async function updateProduct() {
+            try {
+                const id = document.getElementById('updateProductId').value;
+                const body = JSON.parse(document.getElementById('updateProductBody').value);
+                const response = await fetch(`${API_BASE}/products/${id}`, {
+                    method: 'PUT',
+                    headers: getHeaders(true),
+                    body: JSON.stringify(body)
+                });
+                const data = await handleResponse(response);
+                displayResponse('updateProductResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('updateProductResponse', { error: error.message }, true);
+            }
+        }
+
+        async function deleteProduct() {
+            try {
+                const id = document.getElementById('deleteProductId').value;
+                const response = await fetch(`${API_BASE}/products/${id}`, {
+                    method: 'DELETE',
+                    headers: getHeaders(true)
+                });
+                const data = await handleResponse(response);
+                displayResponse('deleteProductResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('deleteProductResponse', { error: error.message }, true);
+            }
+        }
+
+        async function getAllUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/users`, {
+                    headers: getHeaders(true)
+                });
+                const data = await handleResponse(response);
+                displayResponse('getAllUsersResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('getAllUsersResponse', { error: error.message }, true);
+            }
+        }
+
+        async function deleteUser() {
+            try {
+                const id = document.getElementById('deleteUserId').value;
+                const response = await fetch(`${API_BASE}/admin/user/${id}`, {
+                    method: 'DELETE',
+                    headers: getHeaders(true)
+                });
+                const data = await handleResponse(response);
+                displayResponse('deleteUserResponse', data, !response.ok);
+            } catch (error) {
+                displayResponse('deleteUserResponse', { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>

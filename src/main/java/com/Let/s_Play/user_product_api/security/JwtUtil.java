@@ -22,15 +22,7 @@ public class JwtUtil {
         this.expiration = properties.expiration();
     }
 
-    // public String generateToken(String userId, String role) {
-    //     return Jwts.builder()
-    //             .setSubject(userId)
-    //             .claim("role", role)
-    //             .setIssuedAt(new Date())
-    //             .setExpiration(new Date(System.currentTimeMillis() + expiration))
-    //             .signWith(key, SignatureAlgorithm.HS256)
-    //             .compact();
-    // }
+
     public String generateToken(String userId, String role) {
     return Jwts.builder()
             .subject(userId)
@@ -41,12 +33,6 @@ public class JwtUtil {
             .compact();
 }
 
-    // public Jws<Claims> validateToken(String token) {
-    //     return Jwts.parserBuilder()
-    //             .setSigningKey(key)
-    //             .build()
-    //             .parseClaimsJws(token);
-    // }
 
     public Jws<Claims> validateToken(String token) {
     return Jwts.parser()

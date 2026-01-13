@@ -28,6 +28,9 @@ public class UsersService {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User with id " + id + " does not exist");
         }
+        if (userRepository.findById(id).get().getRole().equals("ROLE_ADMIN")) {
+            throw new IllegalArgumentException("Cannot delete an admin user");
+        }
         userRepository.deleteById(id);
     }
 

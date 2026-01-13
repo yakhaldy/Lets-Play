@@ -31,8 +31,9 @@ public class AdminsAccessible {
         return ResponseEntity.ok().body(users);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable String id){
+        System.out.println("-------------------------\nDeleting user with ID: " + id);
         usersService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
