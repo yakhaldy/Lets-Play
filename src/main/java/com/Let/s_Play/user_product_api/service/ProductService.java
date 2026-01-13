@@ -48,6 +48,23 @@ public class ProductService {
         return map(product);
     }
 
+    public ProductResponse update(String id, ProductRequest request) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        if (!isAdmin() && !product.getUserId().equals(currentUserId())) {
+            throw new ForbiddenException("Forbidden");
+        }
+
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+
+        productRepository.save(product);
+
+        return map(product);
+    }
+
     public List<ProductResponse> getAll() {
         if (isAdmin()) {
             return productRepository.findAll().stream()
