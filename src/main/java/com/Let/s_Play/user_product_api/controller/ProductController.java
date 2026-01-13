@@ -18,13 +18,11 @@ public class ProductController {
     
     private final ProductService productService;
 
-    // PUBLIC
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAll() {
         return ResponseEntity.ok(productService.getAll());
     }
 
-    // AUTH REQUIRED
     @PostMapping
     public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request
     ) {

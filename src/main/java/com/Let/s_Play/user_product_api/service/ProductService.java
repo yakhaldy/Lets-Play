@@ -34,7 +34,7 @@ public class ProductService {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 
-    // CREATE
+   
     public ProductResponse create(ProductRequest request) {
         Product product = Product.builder()
                 .name(request.name())
@@ -48,7 +48,6 @@ public class ProductService {
         return map(product);
     }
 
-    // READ (ADMIN sees all, USER sees own)
     public List<ProductResponse> getAll() {
         if (isAdmin()) {
             return productRepository.findAll().stream()
@@ -62,7 +61,7 @@ public class ProductService {
                 .toList();
     }
 
-    // DELETE
+    
     public void delete(String id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));

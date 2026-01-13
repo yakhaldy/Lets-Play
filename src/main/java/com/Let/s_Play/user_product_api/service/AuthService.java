@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.Let.s_Play.user_product_api.model.User;
 import com.Let.s_Play.user_product_api.dto.AuthResponse;
+import com.Let.s_Play.user_product_api.dto.LoginRequest;
 import com.Let.s_Play.user_product_api.dto.UserRequest;
 import com.Let.s_Play.user_product_api.dto.UserResponse;
 import com.Let.s_Play.user_product_api.repository.UserRepository;
@@ -37,7 +38,7 @@ public class AuthService {
         return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
     }
 
-    public AuthResponse login(UserRequest userRequest) {
+    public AuthResponse login(LoginRequest userRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(userRequest.email());
         if (optionalUser.isEmpty()) {
             throw new UnauthorizedException("Invalid email or password");

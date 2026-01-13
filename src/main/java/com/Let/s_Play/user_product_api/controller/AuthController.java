@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Let.s_Play.user_product_api.dto.AuthResponse;
+import com.Let.s_Play.user_product_api.dto.LoginRequest;
 import com.Let.s_Play.user_product_api.dto.UserRequest;
 import com.Let.s_Play.user_product_api.dto.UserResponse;
 import com.Let.s_Play.user_product_api.service.AuthService;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest userRequest) {
         AuthResponse authResponse = authService.login(userRequest);
         return ResponseEntity.ok(authResponse);
     }
